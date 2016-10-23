@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "System.Data.SqlClient": "4.1.0",
+    "ToDoApp.Domain": "1.0.0-*",
+    "Dapper": "1.50.2"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

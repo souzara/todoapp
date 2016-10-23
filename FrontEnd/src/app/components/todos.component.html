@@ -1,0 +1,39 @@
+<div class="container">
+    <h4 [class.hidden]="inEditMode" class="teal-text text-lighten-2">Add Todo</h4>
+    <h4 [class.hidden]="!inEditMode" class="teal-text text-lighten-2">Editing Todo</h4>
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="text" id="text" [(ngModel)]="currentTodo.text">
+                    <label [ngClass]="currentTodo.text ? 'active' : ''" for="text">Input the todo text</label>
+                </div>
+                <div class="input-field col s12">
+                    <a href="#!" class="waves-effect waves-light btn" (click)="save()">{{buttonLabel}}</a>
+                    <a href="#!" [class.hidden]="!inEditMode" class="waves-effect waves-light btn red" (click)="cancel()">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [class.hidden]="inEditMode" class="row" *ngFor="let todo of todos">
+        <div class="col s1">
+            <input type="checkbox" id="chk_{{todo.id}}" [checked]="todo.isCompleted" 
+                (click)="setOrUnsetCompleted(todo)" />
+            <label [attr.for]="'chk_'+ todo.id" id="lbl_{{todo.id}}" materialize="tooltip" class="tooltipped" data-tooltip="Set/Unset completed"></label>
+        </div>
+        <div class="col s9">
+            {{todo.text}}
+        </div>
+        <div class="col s1">
+            <a href="#!" (click)="remove(todo.id)" materialize="tooltip" class="tooltipped" data-tooltip="Remove">
+                <i class="material-icons red-text text-red-2">delete</i>
+            </a>
+        </div>
+        <div class="col s1">
+             <a href="#!" (click)="edit(todo)" materialize="tooltip" class="tooltipped" data-tooltip="Edit">
+                <i class="material-icons teal-text text-lighten-2">mode_edit</i>
+            </a>
+        </div>
+    </div>
+</div>
