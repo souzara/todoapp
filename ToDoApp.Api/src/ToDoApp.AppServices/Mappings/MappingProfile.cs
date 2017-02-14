@@ -11,6 +11,7 @@ namespace ToDoApp.AppServices.Mappings
         {
             CreateMap<Dtos.TodoDto, Domain.Entities.Todo>().ReverseMap();
             CreateMap<Dtos.TodoFilterDto, Domain.Filters.TodoFilter>().ReverseMap();
+            CreateMap<Dtos.TodoLogDto, Domain.Entities.TodoLog>().ReverseMap();
         }
     }
 }

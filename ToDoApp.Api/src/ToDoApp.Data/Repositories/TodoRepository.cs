@@ -17,33 +17,33 @@ namespace ToDoApp.Data.Repositories
 
         public Todo Create(Todo todo)
         {
-            todo.Id = connection.QueryFirst<int>("exec todo_sp_create @Text, @IsCompleted", todo);
+            todo.Id = Connection.QueryFirst<int>("exec todo_sp_create @Text, @IsCompleted", todo, transaction: transaction);
             return todo;
         }
 
         public bool Delete(int id)
         {
-            var affectedRows = connection.Execute("Exec todo_sp_delete @Id", new { Id = id });
+            var affectedRows = Connection.Execute("Exec todo_sp_delete @Id", new { Id = id }, transaction: transaction);
 
             return affectedRows > 0;
         }
 
         public Todo GetById(int id)
         {
-            var result = connection.QueryFirstOrDefault<Todo>("exec todo_sp_get @Id", new { Id = id });
+            var result = Connection.QueryFirstOrDefault<Todo>("exec todo_sp_get @Id", new { Id = id }, transaction: transaction);
             return result;
         }
 
         public IEnumerable<Todo> List(TodoFilter filter)
         {
-            var result = connection.Query<Todo>("exec todo_sp_list @Id, @Text, @IsCompleted", filter);
+            var result = Connection.Query<Todo>("exec todo_sp_list @Id, @Text, @IsCompleted", filter, transaction: transaction);
 
             return result;
         }
 
         public bool Update(Todo todo)
         {
-            var affectedRows = connection.Execute("exec todo_sp_update @Id, @Text, @IsCompleted", todo);
+            var affectedRows = Connection.Execute("exec todo_sp_update @Id, @Text, @IsCompleted", todo, transaction: transaction);
             return affectedRows > 0;
         }
     }

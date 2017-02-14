@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace ToDoApp.Domain.Entities
 {
-    public class Todo
+    public class TodoLog
     {
         public int Id { get; set; }
-        public string Text { get; set; }
-        public bool IsCompleted { get; set; }
-
-        public IEnumerable<TodoLog> TodoLogs { get; set; }
-
+        public string Description { get; set; }
+        public DateTime CreationTime { get; set; }
+        public int TodoId { get; set; }
     }
 }

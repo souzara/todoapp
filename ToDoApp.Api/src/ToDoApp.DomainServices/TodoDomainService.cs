@@ -11,14 +11,38 @@ namespace ToDoApp.DomainServices
     internal class TodoDomainService : Interfaces.ITodoDomainService
     {
         private readonly ITodoRepository repository;
+        private readonly ITodoLogRepository todoLogRepository;
+        private readonly IUnitOfWork uow;
 
-        public TodoDomainService(ITodoRepository repository)
+        public TodoDomainService(ITodoRepository repository, ITodoLogRepository todoLogRepository, IUnitOfWork uow)
         {
             this.repository = repository;
+            this.todoLogRepository = todoLogRepository;
+            this.uow = uow;
         }
         public Todo Create(Todo todo)
         {
-            return repository.Create(todo);
+            Todo result;
+            using (var uowTransaction = this.uow.Begin(repository, todoLogRepository))
+            {
+                try
+                {
+                    result = repository.Create(todo);
+                    foreach (var todoLog in result.TodoLogs ?? Enumerable.Empty<TodoLog>())
+                    {
+                        todoLog.TodoId = result.Id;
+                        todoLogRepository.Create(todoLog);
+                    }
+                    uowTransaction.Commit();
+                }
+                catch
+                {
+                    uowTransaction.Rollback();
+                    throw;
+                }
+            }
+
+            return result;
         }
 
         public bool Delete(int id)
