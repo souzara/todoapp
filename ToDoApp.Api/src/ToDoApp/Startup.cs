@@ -29,8 +29,6 @@ namespace ToDoApp
         {
             services.AddSingleton(Configuration);
 
-            services.AddScoped<Validators.TodoValidator>();
-
             IoC.IoCConfiguration.Configure(services);
             services.AddSwaggerGen();
 

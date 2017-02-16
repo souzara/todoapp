@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDoApp.IoC
 {
-    public static class IoCConfiguration
+    public static class Bootstraper
     {
         public static void Configure(IServiceCollection services)
         {

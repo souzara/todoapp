@@ -21,8 +21,11 @@ namespace ToDoApp.Data
         public UnitOfWork(IConfigurationRoot configuration)
         {
             var connectionString = configuration.GetSection(RepositoryBase.CONNECTIONSTRING_KEY);
+
             if (string.IsNullOrWhiteSpace(connectionString.Value))
                 throw new ArgumentNullException("Connection string not found");
+
+
             connection = new SqlConnection(connectionString.Value);
         } 
         #endregion
@@ -32,7 +35,7 @@ namespace ToDoApp.Data
         {
 
             if (repositories == null || repositories.Length == 0)
-                throw new ArgumentNullException("repositories is required", nameof(repositories));
+                throw new ArgumentNullException(nameof(repositories), "repositories is required");
             var unitOfWorkTransaction = new UnitOfWorkTransaction(connection, repositories);
             return unitOfWorkTransaction;
         }
