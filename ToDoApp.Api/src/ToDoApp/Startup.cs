@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ToDoApp
 {
@@ -30,25 +31,20 @@ namespace ToDoApp
             services.AddSingleton(Configuration);
 
             IoC.IoCConfiguration.Configure(services);
-            services.AddSwaggerGen();
 
-
-            var pathToDoc = Configuration["Swagger:Path"];
-
-            services.ConfigureSwaggerGen(options =>
+            services.AddSwaggerGen(options =>
             {
-                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info
+                options.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
                     Title = "TodoApp Api",
                     Description = "",
                     TermsOfService = "none"
                 });
-                options.IncludeXmlComments(pathToDoc);
                 options.DescribeAllEnumsAsStrings();
             });
 
-
+            services.AddApplicationInsightsTelemetry();
             // Add framework services.
             services.AddMvc();
 
@@ -73,6 +69,7 @@ namespace ToDoApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
+
             app.UseStaticFiles();
 
             app.UseCors(builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
@@ -85,7 +82,10 @@ namespace ToDoApp
             });
 
             app.UseSwagger();
-            app.UseSwaggerUi();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoApp API V1");
+            });
         }
     }
 }
